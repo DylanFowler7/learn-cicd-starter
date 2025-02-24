@@ -76,6 +76,8 @@ func main() {
 		}
 	})
 
+	v1Router := chi.NewRouter()
+
 	if apiCfg.DB != nil {
 		v1Router.Post("/users", apiCfg.handlerUsersCreate)
 		v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handlerUsersGet))
