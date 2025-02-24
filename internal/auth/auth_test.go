@@ -25,6 +25,24 @@ func TestGetAPIKey(t *testing.T) {
 			want:    "",
 			wantErr: errors.New("malformed authorization header"),
 		},
+		{
+			name:    "valid header",
+			headers: http.Header{"Authorization": []string{"ApiKey secret123"}},
+			want:    "secret123",
+			wantErr: nil,
+		},
+		{
+			name:    "incorrect prefix",
+			headers: http.Header{"Authorization": []string{"Bearer secret123"}},
+			want:    "",
+			wantErr: errors.New("malformed authorization header"),
+		},
+		{
+			name:    "too many parts",
+			headers: http.Header{"Authorization": []string{"ApiKey secret123 extra"}},
+			want:    "",
+			wantErr: errors.New("malformed authorization header"),
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
